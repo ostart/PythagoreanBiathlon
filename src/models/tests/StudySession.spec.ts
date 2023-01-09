@@ -17,11 +17,12 @@ describe("StudySessionTests", () => {
     expect(session).toBeTruthy();
   });
 
-  it("should have one successful", () => {
+  it("should have 1 successful", () => {
     const toStudy = session.getUnitToStudy();
-    session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 1));
+    const result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 1));
     const resultStatistics: SessionStatisticsDto = session.getStatistics();
 
+    expect(result).toEqual(true);
     expect(resultStatistics.NumerOfSuccessful).toEqual(1);
     expect(resultStatistics.NumberOfFailed).toEqual(0);
     expect(resultStatistics.FailureToRepeat.length).toEqual(0);
@@ -29,11 +30,14 @@ describe("StudySessionTests", () => {
     expect(session.getUnitToStudy()).toBeNull();
   });
 
-  it("should have one successful and 2 failed", () => {
+  it("should have 1 successful and 2 failed", () => {
     const toStudy = session.getUnitToStudy();
-    session.returnResultForUnitToStudy(5, new Date(2023, 1, 1, 0, 0, 2));
-    session.returnResultForUnitToStudy(7, new Date(2023, 1, 1, 0, 0, 3));
-    session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
+    let result = session.returnResultForUnitToStudy(5, new Date(2023, 1, 1, 0, 0, 2));
+    expect(result).toEqual(false);
+    result = session.returnResultForUnitToStudy(7, new Date(2023, 1, 1, 0, 0, 3));
+    expect(result).toEqual(false);
+    result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
+    expect(result).toEqual(true);
 
     const resultStatistics: SessionStatisticsDto = session.getStatistics();
 
@@ -46,25 +50,30 @@ describe("StudySessionTests", () => {
     expect(session.getUnitToStudy()).toBeNull();
   });
 
-  it("should have two successful and 3 failed sorted", () => {
+  it("should have 2 successful and 3 failed sorted", () => {
     const statistics = new SessionStatistics(new Date(2023, 1, 1, 0, 0, 0));
     const units: Array<StudyUnit> = [new StudyUnit(12, 4, Operation.Divide), new StudyUnit(2, 3, Operation.Multiply)];
     const session = new StudySession(units, statistics);
 
     let toStudy = session.getUnitToStudy();
-    session.returnResultForUnitToStudy(5, new Date(2023, 1, 1, 0, 0, 1));
+    let result = session.returnResultForUnitToStudy(5, new Date(2023, 1, 1, 0, 0, 1));
+    expect(result).toEqual(false);
 
     toStudy = session.getUnitToStudy();
-    session.returnResultForUnitToStudy(7, new Date(2023, 1, 1, 0, 0, 2));
+    result = session.returnResultForUnitToStudy(7, new Date(2023, 1, 1, 0, 0, 2));
+    expect(result).toEqual(false);
 
     toStudy = session.getUnitToStudy();
-    session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
+    result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
+    expect(result).toEqual(false);
 
     toStudy = session.getUnitToStudy();
-    session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
+    result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
+    expect(result).toEqual(true);
 
     toStudy = session.getUnitToStudy();
-    session.returnResultForUnitToStudy(3, new Date(2023, 1, 1, 0, 0, 4));
+    result = session.returnResultForUnitToStudy(3, new Date(2023, 1, 1, 0, 0, 4));
+    expect(result).toEqual(true);
 
     const resultStatistics: SessionStatisticsDto = session.getStatistics();
 

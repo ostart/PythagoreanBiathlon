@@ -3,7 +3,7 @@ import { StudyRange } from './StudyRange';
 import { StudyUnit } from './StudyUnit';
 
 export class StudyUnitsFactory {
-  createUnitsToStudy(xRange: StudyRange, yRange: StudyRange, operations: Array<Operation>): Array<StudyUnit> {
+  generateUnitsToStudy(xRange: StudyRange, yRange: StudyRange, operations: Array<Operation>): Array<StudyUnit> {
     const generatedUnits: Array<StudyUnit> = [];
 
     for(let x: number = xRange.From; x <= xRange.To; x += 1) {
@@ -14,6 +14,10 @@ export class StudyUnitsFactory {
       }
     }
     return this.randomizeUnits(generatedUnits);
+  }
+
+  createUnitsToStudy(unitsToStudy: StudyUnit[]): StudyUnit[] {
+    return this.randomizeUnits(unitsToStudy);
   }
 
   private createUnit(x: number, y: number, op: Operation): StudyUnit {

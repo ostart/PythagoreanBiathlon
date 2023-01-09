@@ -17,15 +17,19 @@ export class StudySession {
     return this.UnitsToStudy.length === 0 ? null : this.UnitsToStudy[0];
   }
 
-  returnResultForUnitToStudy(result: number, date: Date = new Date()): void {
-    if (this.UnitsToStudy.length === 0) return;
+  returnResultForUnitToStudy(result: number, date: Date = new Date()): boolean | null {
+    if (this.UnitsToStudy.length === 0) return null;
     const unitToStudy = this.UnitsToStudy.shift() as StudyUnit;
     if (this.checkResult(unitToStudy, result))
+    {
       this.Statistics.addSuccess(unitToStudy, date);
+      return true;
+    }
     else
     {
       this.Statistics.addFail(unitToStudy, date);
       this.UnitsToStudy.push(unitToStudy);
+      return false;
     }
   }
 
