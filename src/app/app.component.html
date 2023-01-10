@@ -4,14 +4,14 @@
 
     <div class="studingModule" *ngIf="studingModuleHidden">
 
-        <div class="studingModule__picture"></div>
+        <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
 
         <div class="studingModule__unitToStudy">{{unitToStudy?.operand1}} {{unitToStudy?.operation}} {{unitToStudy?.operand2}} = ?</div>
 
         <form class="studingModule__form" [formGroup]="form" (ngSubmit)="submit()">
 
             <mat-form-field>
-                <input type="number" matInput placeholder="Введите ответ" formControlName="result">
+                <input type="number" matInput placeholder="Введите ответ" formControlName="result" spellcheck="false">
                 <mat-icon matSuffix>mode_edit</mat-icon>
             </mat-form-field>
 

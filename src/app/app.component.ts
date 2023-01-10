@@ -3,16 +3,24 @@ import { BllService } from './../services/bll.service';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SessionStatisticsDto } from 'src/models/SessionStatisticsDto';
+import { trigger, transition, useAnimation } from '@angular/animations';
+import { headShake, hinge } from 'ng-animate';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('target',
+      [ transition('null => out', useAnimation(headShake), { params: {timing: 0.7} }),
+        transition('null => in', useAnimation(hinge), { params: {timing: 0.7} })]
+    ),
+  ],
 })
 export class AppComponent {
   title = 'PythagoreanBiathlon';
   form: FormGroup;
-  hitTheTarget: boolean | null;
+  targetState: string;
   unitToStudy: StudyUnit | null;
   sessionStatistics: SessionStatisticsDto | null;
   preSettingsHidden: boolean;
@@ -25,7 +33,7 @@ export class AppComponent {
     this.form = new FormGroup({
       result: new FormControl(null, [Validators.required])
     });
-    this.hitTheTarget = null;
+    this.targetState = 'null';
     this.statisticsResult = '';
     this.unitToStudy = bllService.unitToStudy();
     this.sessionStatistics = (this.unitToStudy === null) ? bllService.getStatistics() : null;
@@ -38,8 +46,9 @@ export class AppComponent {
   submit() {
     if (this.form.valid)
     {
-      const  result: number = this.form.value.result;
-      this.hitTheTarget = this.bllService.returnResult(result);
+      const result: number = this.form.value.result;
+      const inOut = this.bllService.returnResult(result);
+      this.targetState = inOut ? 'in' : 'out';
       this.form.reset();
       this.unitToStudy = this.bllService.unitToStudy();
       if (this.unitToStudy === null)
@@ -48,8 +57,12 @@ export class AppComponent {
         this.showModules(false, false, true);
         this.statisticsResult = `${this.sessionStatistics.NumerOfSuccessful} : ${this.sessionStatistics.NumberOfFailed} for ${this.sessionStatistics.SpentTime.getTime() / 1000} s.`
       }
-      this.hitTheTarget = null;
     }
+  }
+
+  onAnimationDoneEvent()
+  {
+    this.targetState = 'null';
   }
 
   private showModules(preSettingsHidden: boolean, studingModuleHidden: boolean, finalStatisticsHidden: boolean): void {

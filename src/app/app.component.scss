@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.studingModule__picture {
+.studingModule__target {
   width: 100px;
   height: 100px;
   border: 2px solid #000;
@@ -41,6 +41,11 @@ input[type="number"] {
 ::ng-deep .mat-mdc-form-field-subscript-wrapper{
   margin-bottom: -1.25em;
 }
+
+// .mdc-text-field.mdc-text-field--invalid {
+//   color: black !important;
+//   border: #000 !important;
+// }
 
 @media screen and (max-width: 374px) {
   .container {
