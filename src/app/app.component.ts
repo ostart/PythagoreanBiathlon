@@ -1,6 +1,6 @@
 import { StudyUnit } from './../models/StudyUnit';
 import { BllService } from './../services/bll.service';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SessionStatisticsDto } from 'src/models/SessionStatisticsDto';
 import { trigger, transition, useAnimation } from '@angular/animations';
@@ -16,6 +16,7 @@ import { headShake, hinge } from 'ng-animate';
         transition('null => in', useAnimation(hinge), { params: {timing: 0.7} })]
     ),
   ],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
   title = 'PythagoreanBiathlon';
@@ -23,6 +24,7 @@ export class AppComponent {
   targetState: string;
   unitToStudy: StudyUnit | null;
   sessionStatistics: SessionStatisticsDto | null;
+  message: string;
   preSettingsHidden: boolean;
   studingModuleHidden: boolean;
   finalStatisticsHidden: boolean;
@@ -41,16 +43,20 @@ export class AppComponent {
     this.studingModuleHidden = false;
     this.finalStatisticsHidden = false;
     this.showModules(false, true, false);
+    this.message = this.formMessageFrom(this.unitToStudy);
   }
 
-  submit() {
+  async submit() {
     if (this.form.valid)
     {
       const result: number = this.form.value.result;
       const inOut = this.bllService.returnResult(result);
       this.targetState = inOut ? 'in' : 'out';
+      this.message = inOut ? '<span class="colorIn">ТОЧНО</span>' : '<span class="colorOut">МИМО</span>';
       this.form.reset();
+      await this.delay(500);
       this.unitToStudy = this.bllService.unitToStudy();
+      this.message = this.formMessageFrom(this.unitToStudy)
       if (this.unitToStudy === null)
       {
         this.sessionStatistics = this.bllService.getStatistics();
@@ -69,5 +75,13 @@ export class AppComponent {
     this.preSettingsHidden = preSettingsHidden;
     this.studingModuleHidden = studingModuleHidden;
     this.finalStatisticsHidden = finalStatisticsHidden;
+  }
+
+  private formMessageFrom(unit: StudyUnit | null) {
+    return unit === null ? '' : `${unit.operand1} ${unit.operation} ${unit.operand2} = ?`;
+  }
+
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

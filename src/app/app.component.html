@@ -6,12 +6,12 @@
 
         <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
 
-        <div class="studingModule__unitToStudy">{{unitToStudy?.operand1}} {{unitToStudy?.operation}} {{unitToStudy?.operand2}} = ?</div>
+        <div class="studingModule__unitToStudy" [innerHTML]="message"></div>
 
         <form class="studingModule__form" [formGroup]="form" (ngSubmit)="submit()">
 
             <mat-form-field>
-                <input type="number" matInput placeholder="Введите ответ" formControlName="result" spellcheck="false">
+                <input type="number" matInput placeholder="Введите ответ" formControlName="result">
                 <mat-icon matSuffix>mode_edit</mat-icon>
             </mat-form-field>
 

@@ -31,7 +31,7 @@
 
 .studingModule__form__btn {
   margin: 0 2px;
-  height: 56px;
+  height: 56px!important;
 }
 
 input[type="number"] {
@@ -42,10 +42,13 @@ input[type="number"] {
   margin-bottom: -1.25em;
 }
 
-// .mdc-text-field.mdc-text-field--invalid {
-//   color: black !important;
-//   border: #000 !important;
-// }
+.colorIn {
+  color: rgb(9, 232, 9)!important;
+}
+
+.colorOut {
+  color: red!important;
+}
 
 @media screen and (max-width: 374px) {
   .container {
