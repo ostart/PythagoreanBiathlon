@@ -38,15 +38,19 @@ export class StudySession {
     return this.Statistics.getStatistics();
   }
 
-  private checkResult(unitToStudy: StudyUnit, result: number): boolean {
+  calculateResult(unitToStudy: StudyUnit): number {
     switch(unitToStudy.operation)
     {
       case Operation.Multiply:
-        return unitToStudy.operand1 * unitToStudy.operand2 === result
+        return unitToStudy.operand1 * unitToStudy.operand2;
       case Operation.Divide:
-        return unitToStudy.operand1 / unitToStudy.operand2 === result
+        return unitToStudy.operand1 / unitToStudy.operand2;
       default:
-        return false;
+        throw new Error();
     }
+  }
+
+  private checkResult(unitToStudy: StudyUnit, result: number): boolean {
+    return this.calculateResult(unitToStudy) === result;
   }
 }

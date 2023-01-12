@@ -13,7 +13,7 @@ export class BllService {
 
   constructor() {
     // const unitsToStudy = new StudyUnitsFactory().generateUnitsToStudy(new StudyRange(2, 9), new StudyRange(2, 9), [Operation.Multiply]);
-    const unitsToStudy = new StudyUnitsFactory().generateUnitsToStudy(new StudyRange(2, 4), new StudyRange(2, 4), [Operation.Multiply]);
+    const unitsToStudy = new StudyUnitsFactory().generateUnitsToStudy(new StudyRange(2, 3), new StudyRange(2, 3), [Operation.Multiply, Operation.Divide]);
     this.studySession = new StudySession(unitsToStudy, new SessionStatistics());
   }
 
@@ -32,5 +32,9 @@ export class BllService {
 
   getStatistics(): SessionStatisticsDto {
     return this.studySession.getStatistics();
+  }
+
+  calculateResult(unit: StudyUnit): number {
+    return this.studySession.calculateResult(unit);
   }
 }

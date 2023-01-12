@@ -1,7 +1,33 @@
+input[type="number"] {
+  text-align: center;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper{
+  margin-bottom: -1.25em!important;
+}
+
+.colorIn {
+  color: rgb(9, 232, 9)!important;
+}
+
+.colorOut {
+  color: red!important;
+}
+
+.marginTop20 {
+  margin-top: 20px!important;
+}
+
+.backgroundColorMain {
+  background-color: #ffd740!important;
+}
+
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 .studingModule {
@@ -34,20 +60,10 @@
   height: 56px!important;
 }
 
-input[type="number"] {
-  text-align: center;
-}
-
-::ng-deep .mat-mdc-form-field-subscript-wrapper{
-  margin-bottom: -1.25em;
-}
-
-.colorIn {
-  color: rgb(9, 232, 9)!important;
-}
-
-.colorOut {
-  color: red!important;
+.finalStatistics {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media screen and (max-width: 374px) {
