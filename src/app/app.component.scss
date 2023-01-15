@@ -7,11 +7,11 @@ input[type="number"] {
 }
 
 .colorIn {
-  color: rgb(9, 232, 9)!important;
+  color: #018786!important
 }
 
 .colorOut {
-  color: red!important;
+  color: #f44336!important;
 }
 
 .marginTop20 {
@@ -30,10 +30,17 @@ input[type="number"] {
   height: 100vh;
 }
 
-.studingModule {
+.studingModule, .preSettings {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.preSettings__choiceGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  gap: 5px;
 }
 
 .studingModule__target {

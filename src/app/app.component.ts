@@ -7,7 +7,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge } from 'ng-animate';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -49,6 +48,10 @@ export class AppComponent {
     this.unitToStudy = bllService.unitToStudy();
     this.sessionStatistics = (this.unitToStudy === null) ? bllService.getStatistics() : null;
     this.message = this.formMessageFrom(this.unitToStudy, this.questionMark, this.operationMarkSettings);
+    this.showModules(true, false, false);
+  }
+
+  startClick() {
     this.showModules(false, true, false);
   }
 
@@ -67,7 +70,7 @@ export class AppComponent {
       {
         this.sessionStatistics = this.bllService.getStatistics();
         this.showModules(false, false, true);
-        const VoroshilovStriker = this.sessionStatistics.NumberOfFailed === 0 ? '<p>Ворошиловский стрелок!</p>' : '';
+        const VoroshilovStriker = this.sessionStatistics.NumberOfFailed === 0 ? '<p class="backgroundColorMain">Ворошиловский стрелок!</p>' : '';
         this.statisticsResult = `${VoroshilovStriker}
         <p class="colorIn">Точно: ${this.sessionStatistics.NumerOfSuccessful}</p>
         <p class="colorOut">Мимо: ${this.sessionStatistics.NumberOfFailed}</p>

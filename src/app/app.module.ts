@@ -9,10 +9,12 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { SanitizeHtmlPipe } from 'src/pipes/sanitizeHtml.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SanitizeHtmlPipe
   ],
   imports: [
     BrowserModule,

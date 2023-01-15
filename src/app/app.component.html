@@ -1,12 +1,20 @@
 <div class="container">
 
-    <div class="preSettings" *ngIf="preSettingsHidden"></div>
+    <div class="preSettings" *ngIf="preSettingsHidden">
+
+      <div class="preSettings__switchers"></div>
+
+      <div class="preSettings__choiceGrid"></div>
+
+      <button mat-flat-button color="accent" (click)="startClick()">Поехали!</button>
+
+    </div>
 
     <div class="studingModule" *ngIf="studingModuleHidden">
 
         <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
 
-        <div class="studingModule__unitToStudy" [innerHTML]="message"></div>
+        <div class="studingModule__unitToStudy" [innerHTML]="message|sanitizeHtml"></div>
 
         <form class="studingModule__form" [formGroup]="form" (ngSubmit)="submit()">
 
