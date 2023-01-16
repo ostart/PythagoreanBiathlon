@@ -3,7 +3,7 @@ import { Operation } from 'src/models/Operation';
 import { StudyUnit } from 'src/models/StudyUnit';
 import { BllService } from 'src/services/bll.service';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge } from 'ng-animate';
 
@@ -21,7 +21,8 @@ import { headShake, hinge } from 'ng-animate';
 })
 export class AppComponent {
   title = 'PythagoreanBiathlon';
-  form: FormGroup;
+  formInputResult: FormGroup;
+  formCheckboxNumbers: FormGroup;
   targetState: string;
   unitToStudy: StudyUnit | null;
   sessionStatistics: SessionStatisticsDto | null;
@@ -34,9 +35,10 @@ export class AppComponent {
   operationMarkSettings: Map<Operation, string> = new Map<Operation, string>();
 
   constructor(private bllService: BllService) {
-    this.form = new FormGroup({
+    this.formInputResult = new FormGroup({
       result: new FormControl(null, [Validators.required])
     });
+    this.formCheckboxNumbers = new FormBuilder().group(this.generateCheckboxObject());
     this.targetState = 'null';
     this.statisticsResult = '';
     this.preSettingsHidden = false;
@@ -56,13 +58,13 @@ export class AppComponent {
   }
 
   async submit() {
-    if (this.form.valid)
+    if (this.formInputResult.valid)
     {
-      const result: number = this.form.value.result;
+      const result: number = this.formInputResult.value.result;
       const inOut = this.bllService.returnResult(result);
       this.targetState = inOut ? 'in' : 'out';
       this.message = inOut ? '<span class="colorIn">ТОЧНО</span>' : '<span class="colorOut">МИМО</span>';
-      this.form.reset();
+      this.formInputResult.reset();
       await this.delay(500);
       this.unitToStudy = this.bllService.unitToStudy();
       this.message = this.formMessageFrom(this.unitToStudy, this.questionMark, this.operationMarkSettings)
@@ -128,7 +130,18 @@ export class AppComponent {
   private initOperationMarkSettings(): Map<Operation, string> {
     const result = new Map<Operation, string>();
     result.set(Operation.Multiply, '*');
+    // result.set(Operation.Multiply, '<mat-icon role="img" aria-hidden="false" fonticon="home" class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color" data-mat-icon-type="font" data-mat-icon-name="home"></mat-icon>');
     result.set(Operation.Divide, '/');
+    return result;
+  }
+
+  private generateCheckboxObject(): {[k: string]: boolean} {
+    const result: {[k: string]: boolean} = {};
+    for (let i = 2; i <= 9; i+=1) {
+      for (let j = 2; j <= 9; j+=1) {
+        result[`${i}x${j}`] = false;
+      }
+    }
     return result;
   }
 }
