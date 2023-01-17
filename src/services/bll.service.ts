@@ -12,8 +12,7 @@ export class BllService {
   private studySession: StudySession;
 
   constructor() {
-    // const unitsToStudy = new StudyUnitsFactory().generateUnitsToStudy(new StudyRange(2, 9), new StudyRange(2, 9), [Operation.Multiply]);
-    const unitsToStudy = new StudyUnitsFactory().generateUnitsToStudy(new StudyRange(2, 3), new StudyRange(2, 3), [Operation.Multiply, Operation.Divide]);
+    const unitsToStudy = new StudyUnitsFactory().generateUnitsToStudy(new StudyRange(2, 9), new StudyRange(2, 9), [Operation.Multiply, Operation.Divide]);
     this.studySession = new StudySession(unitsToStudy, new SessionStatistics());
   }
 

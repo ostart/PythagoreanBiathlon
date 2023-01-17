@@ -1,6 +1,7 @@
 import { SessionStatisticsDto } from 'src/models/SessionStatisticsDto';
 import { Operation } from 'src/models/Operation';
 import { StudyUnit } from 'src/models/StudyUnit';
+import { Entry } from 'src/models/Entry';
 import { BllService } from 'src/services/bll.service';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
@@ -33,7 +34,7 @@ export class AppComponent {
   statisticsResult: string;
   questionMark = '?';
   operationMarkSettings: Map<Operation, string> = new Map<Operation, string>();
-  selected = 'multiply';
+  selectedOperations = 'multiply';
   isCheckedAll = true;
 
   constructor(private bllService: BllService) {
@@ -61,6 +62,8 @@ export class AppComponent {
   }
 
   startClick() {
+    const unitsToStudy: StudyUnit[] = this.createUnitsToStudy(this.formCheckboxNumbers.value, this.selectedOperations)
+    this.bllService.init(unitsToStudy);
     this.showModules(false, true, false);
   }
 
@@ -151,5 +154,27 @@ export class AppComponent {
       }
     }
     return result;
+  }
+
+  private createUnitsToStudy(allNumbers: {[k: string]: boolean}, selectedOperations: string): StudyUnit[] {
+    const selectedNumbers = this.filterObject(allNumbers, ([k, v]) => v === true);
+    console.log(selectedNumbers);
+    const result: StudyUnit[] = [];
+    const operation: Operation[] = [];
+    if (selectedOperations.includes('multiply'))
+      operation.push(Operation.Multiply);
+    if (selectedOperations.includes('divide'))
+      operation.push(Operation.Divide);
+
+    return result;
+  }
+
+  private filterObject<T extends object>(
+    obj: T,
+    fn: (entry: Entry<T>, i: number, arr: Entry<T>[]) => boolean
+  ) {
+    return Object.fromEntries(
+      (Object.entries(obj) as Entry<T>[]).filter(fn)
+    ) as Partial<T>
   }
 }
