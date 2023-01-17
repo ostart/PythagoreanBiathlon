@@ -20,7 +20,7 @@ import { headShake, hinge } from 'ng-animate';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  title = 'PythagoreanBiathlon';
+  title = 'PythagoreanBiathlon | Умножайка';
   formInputResult: FormGroup;
   formCheckboxNumbers: FormGroup;
   targetState: string;
@@ -31,14 +31,16 @@ export class AppComponent {
   studingModuleHidden: boolean;
   finalStatisticsHidden: boolean;
   statisticsResult: string;
-  questionMark: string = '?';
+  questionMark = '?';
   operationMarkSettings: Map<Operation, string> = new Map<Operation, string>();
+  selected = 'multiply';
+  isCheckedAll = true;
 
   constructor(private bllService: BllService) {
     this.formInputResult = new FormGroup({
       result: new FormControl(null, [Validators.required])
     });
-    this.formCheckboxNumbers = new FormBuilder().group(this.generateCheckboxObject());
+    this.formCheckboxNumbers = new FormBuilder().group(this.generateCheckboxObject(this.isCheckedAll));
     this.targetState = 'null';
     this.statisticsResult = '';
     this.preSettingsHidden = false;
@@ -51,6 +53,11 @@ export class AppComponent {
     this.sessionStatistics = (this.unitToStudy === null) ? bllService.getStatistics() : null;
     this.message = this.formMessageFrom(this.unitToStudy, this.questionMark, this.operationMarkSettings);
     this.showModules(true, false, false);
+  }
+
+  isCheckedAlltoggleChange() {
+    this.isCheckedAll = !this.isCheckedAll;
+    this.formCheckboxNumbers = new FormBuilder().group(this.generateCheckboxObject(this.isCheckedAll));
   }
 
   startClick() {
@@ -129,17 +136,18 @@ export class AppComponent {
 
   private initOperationMarkSettings(): Map<Operation, string> {
     const result = new Map<Operation, string>();
-    result.set(Operation.Multiply, '*');
-    // result.set(Operation.Multiply, '<mat-icon role="img" aria-hidden="false" fonticon="home" class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color" data-mat-icon-type="font" data-mat-icon-name="home"></mat-icon>');
-    result.set(Operation.Divide, '/');
+    // result.set(Operation.Multiply, '*');
+    result.set(Operation.Multiply, '<mat-icon role="img" aria-hidden="false" fonticon="xmark" class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color" data-mat-icon-type="font" data-mat-icon-name="xmark"></mat-icon>');
+    // result.set(Operation.Divide, '/');
+    result.set(Operation.Divide, '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVR4nO3YMQqFMBBF0bsQLcW9f4I7E9QN+BFiI5JCFDNyD7wm3SMzzYAkSXpUCyRgyRmAnoAlRmA9ZHtrCCSdlNjzI5ClUGTmI0UmAhkKRbaxC6MvLHtHME1e7DknRSwhSe9aX85tLII/wiOjJUnf13rXqoh3rdp416qNdy1JksR1fwlz4pNZY5vlAAAAAElFTkSuQmCC">');
     return result;
   }
 
-  private generateCheckboxObject(): {[k: string]: boolean} {
+  private generateCheckboxObject(value: boolean): {[k: string]: boolean} {
     const result: {[k: string]: boolean} = {};
     for (let i = 2; i <= 9; i+=1) {
       for (let j = 2; j <= 9; j+=1) {
-        result[`${i}x${j}`] = false;
+        result[`${i}x${j}`] = value;
       }
     }
     return result;

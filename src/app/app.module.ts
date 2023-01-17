@@ -9,6 +9,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { SanitizeHtmlPipe } from 'src/pipes/sanitizeHtml.pipe';
 
@@ -26,6 +28,8 @@ import { SanitizeHtmlPipe } from 'src/pipes/sanitizeHtml.pipe';
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
+    MatSelectModule,
+    MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule
   ],

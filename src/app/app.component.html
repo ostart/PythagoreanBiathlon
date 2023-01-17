@@ -1,8 +1,23 @@
 <div class="container">
 
+    <h1>Пифагорейский биатлон</h1>
+
     <div class="preSettings" *ngIf="preSettingsHidden">
 
-      <div class="preSettings__switchers"></div>
+      <div class="preSettings__switchers">
+
+        <mat-slide-toggle [(ngModel)]="isCheckedAll" (toggleChange)="isCheckedAlltoggleChange()">Учить все</mat-slide-toggle>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Выберите операцию</mat-label>
+          <mat-select [(value)]="selected">
+            <mat-option value="multiply">Умножение</mat-option>
+            <mat-option value="divide">Деление</mat-option>
+            <mat-option value="multiply&divide">Умножение и Деление</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
 
       <section class="preSettings__choiceGrid" [formGroup]="formCheckboxNumbers">
         <div></div>

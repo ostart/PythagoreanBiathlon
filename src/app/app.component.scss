@@ -6,6 +6,10 @@ input[type="number"] {
   margin-bottom: -1.25em!important;
 }
 
+mat-select {
+  font-size: 15px!important;
+}
+
 .colorIn {
   color: #018786!important
 }
@@ -35,10 +39,10 @@ input[type="number"] {
   flex-direction: column;
 }
 
-.studingModule {
+.preSettings__switchers {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .preSettings__choiceGrid {
@@ -46,6 +50,12 @@ input[type="number"] {
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
   justify-items: center;
+  align-items: center;
+}
+
+.studingModule {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
