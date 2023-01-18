@@ -20,7 +20,7 @@ export class StudyUnitsFactory {
     return this.randomizeUnits(unitsToStudy);
   }
 
-  private createUnit(x: number, y: number, op: Operation): StudyUnit {
+  createUnit(x: number, y: number, op: Operation): StudyUnit {
     switch(op) {
       case Operation.Multiply:
         return new StudyUnit(x, y, op);

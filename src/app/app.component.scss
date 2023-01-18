@@ -1,3 +1,8 @@
+h1 {
+  font-size: 28px!important;
+  font-weight: 900!important;
+}
+
 input[type="number"] {
   text-align: center;
 }
@@ -24,6 +29,14 @@ mat-select {
 
 .backgroundColorMain {
   background-color: #ffd740!important;
+}
+
+.picture-multiply {
+  width: 11px;
+}
+
+.picture-divide {
+  width: 15px;
 }
 
 .container {
@@ -65,11 +78,11 @@ mat-select {
   border: 2px solid #000;
   border-radius: 50%;
   background-color: #000;
-  margin: 20px;
+  margin: 30px;
 }
 
-.studingModule__unitToStudy, .finalStatistics {
-  font-size: larger;
+.studingModule__unitToStudy {
+  font-size: x-large;
   font-weight: 500;
 }
 
@@ -84,6 +97,8 @@ mat-select {
 }
 
 .finalStatistics {
+  font-size: x-large;
+  font-weight: 500;
   display: flex;
   flex-direction: column;
   align-items: center;

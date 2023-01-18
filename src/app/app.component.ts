@@ -25,9 +25,9 @@ export class AppComponent {
   formInputResult: FormGroup;
   formCheckboxNumbers: FormGroup;
   targetState: string;
-  unitToStudy: StudyUnit | null;
+  unitToStudy: StudyUnit | null = null;
   sessionStatistics: SessionStatisticsDto | null;
-  message: string;
+  message: string = '';
   preSettingsHidden: boolean;
   studingModuleHidden: boolean;
   finalStatisticsHidden: boolean;
@@ -50,9 +50,8 @@ export class AppComponent {
     if (this.operationMarkSettings.size === 0) {
       this.operationMarkSettings = this.initOperationMarkSettings();
     }
-    this.unitToStudy = bllService.unitToStudy();
-    this.sessionStatistics = (this.unitToStudy === null) ? bllService.getStatistics() : null;
-    this.message = this.formMessageFrom(this.unitToStudy, this.questionMark, this.operationMarkSettings);
+    this.getUnitToMessage();
+    this.sessionStatistics = (this.unitToStudy === null) ? this.bllService.getStatistics() : null;
     this.showModules(true, false, false);
   }
 
@@ -64,6 +63,8 @@ export class AppComponent {
   startClick() {
     const unitsToStudy: StudyUnit[] = this.createUnitsToStudy(this.formCheckboxNumbers.value, this.selectedOperations)
     this.bllService.init(unitsToStudy);
+    this.getUnitToMessage();
+    this.sessionStatistics = (this.unitToStudy === null) ? this.bllService.getStatistics() : null;
     this.showModules(false, true, false);
   }
 
@@ -76,8 +77,7 @@ export class AppComponent {
       this.message = inOut ? '<span class="colorIn">ТОЧНО</span>' : '<span class="colorOut">МИМО</span>';
       this.formInputResult.reset();
       await this.delay(500);
-      this.unitToStudy = this.bllService.unitToStudy();
-      this.message = this.formMessageFrom(this.unitToStudy, this.questionMark, this.operationMarkSettings)
+      this.getUnitToMessage();
       if (this.unitToStudy === null)
       {
         this.sessionStatistics = this.bllService.getStatistics();
@@ -106,7 +106,7 @@ export class AppComponent {
     this.finalStatisticsHidden = finalStatisticsHidden;
   }
 
-  private formMessageFrom(unit: StudyUnit | null, result: string, settings: Map<Operation, string>): string {
+  private formQuestionMessage(unit: StudyUnit | null, result: string, settings: Map<Operation, string>): string {
     return unit === null ? '' : `${unit.operand1} ${settings.get(unit.operation)} ${unit.operand2} = ${result}`;
   }
 
@@ -131,7 +131,7 @@ export class AppComponent {
     const result: string[] = [];
     failureToRepeat.forEach(v => {
       const res: number = this.bllService.calculateResult(v);
-      result.push(`<p>${this.formMessageFrom(v, res.toString(), this.operationMarkSettings)}</p>`)
+      result.push(`<p>${this.formQuestionMessage(v, res.toString(), this.operationMarkSettings)}</p>`)
     });
 
     return result.join('');
@@ -140,9 +140,9 @@ export class AppComponent {
   private initOperationMarkSettings(): Map<Operation, string> {
     const result = new Map<Operation, string>();
     // result.set(Operation.Multiply, '*');
-    result.set(Operation.Multiply, '<mat-icon role="img" aria-hidden="false" fonticon="xmark" class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color" data-mat-icon-type="font" data-mat-icon-name="xmark"></mat-icon>');
+    result.set(Operation.Multiply, '<img class="picture-multiply" src="assets/multiply.svg">');
     // result.set(Operation.Divide, '/');
-    result.set(Operation.Divide, '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVR4nO3YMQqFMBBF0bsQLcW9f4I7E9QN+BFiI5JCFDNyD7wm3SMzzYAkSXpUCyRgyRmAnoAlRmA9ZHtrCCSdlNjzI5ClUGTmI0UmAhkKRbaxC6MvLHtHME1e7DknRSwhSe9aX85tLII/wiOjJUnf13rXqoh3rdp416qNdy1JksR1fwlz4pNZY5vlAAAAAElFTkSuQmCC">');
+    result.set(Operation.Divide, '<img class="picture-divide" src="assets/divide.svg">');
     return result;
   }
 
@@ -157,8 +157,6 @@ export class AppComponent {
   }
 
   private createUnitsToStudy(allNumbers: {[k: string]: boolean}, selectedOperations: string): StudyUnit[] {
-    const selectedNumbers = this.filterObject(allNumbers, ([k, v]) => v === true);
-    console.log(selectedNumbers);
     const result: StudyUnit[] = [];
     const operation: Operation[] = [];
     if (selectedOperations.includes('multiply'))
@@ -166,6 +164,16 @@ export class AppComponent {
     if (selectedOperations.includes('divide'))
       operation.push(Operation.Divide);
 
+    const selectedNumbers = this.filterObject(allNumbers, ([k, v]) => v === true);
+    const selectedKeys = Object.keys(selectedNumbers);
+    selectedKeys.forEach(k => {
+      const [strX, strY] = k.split("x");
+      const x = parseInt(strX);
+      const y = parseInt(strY);
+      operation.forEach(op => {
+        result.push(this.bllService.createUnit(x, y, op));
+      });
+    });
     return result;
   }
 
@@ -176,5 +184,10 @@ export class AppComponent {
     return Object.fromEntries(
       (Object.entries(obj) as Entry<T>[]).filter(fn)
     ) as Partial<T>
+  }
+
+  private getUnitToMessage() {
+    this.unitToStudy = this.bllService.unitToStudy();
+    this.message = this.formQuestionMessage(this.unitToStudy, this.questionMark, this.operationMarkSettings);
   }
 }

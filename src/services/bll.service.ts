@@ -36,4 +36,8 @@ export class BllService {
   calculateResult(unit: StudyUnit): number {
     return this.studySession.calculateResult(unit);
   }
+
+  createUnit(x: number, y: number, op: Operation): StudyUnit {
+    return new StudyUnitsFactory().createUnit(x, y, op);
+  }
 }
