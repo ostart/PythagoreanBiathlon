@@ -4,7 +4,7 @@ import { SessionStatisticsDto } from './SessionStatisticsDto';
 import { StudyUnit } from './StudyUnit';
 
 export class StudySession {
-  Guid: string = crypto.randomUUID();
+  //Guid: string = crypto.randomUUID();
   private UnitsToStudy: Array<StudyUnit>;
   private Statistics: SessionStatistics;
 
