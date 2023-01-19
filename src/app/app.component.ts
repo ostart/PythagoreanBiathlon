@@ -4,7 +4,7 @@ import { StudyUnit } from 'src/models/StudyUnit';
 import { Entry } from 'src/models/Entry';
 import { BllService } from 'src/services/bll.service';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge } from 'ng-animate';
 
@@ -39,7 +39,7 @@ export class AppComponent {
 
   constructor(private bllService: BllService) {
     this.formInputResult = new FormGroup({
-      result: new FormControl(null, [Validators.required])
+      result: new FormControl(null)
     });
     this.formCheckboxNumbers = new FormBuilder().group(this.generateCheckboxObject(this.isCheckedAll));
     this.targetState = 'null';
@@ -69,9 +69,9 @@ export class AppComponent {
   }
 
   async submit() {
-    if (this.formInputResult.valid)
+    const result: number = this.formInputResult.value.result;
+    if (Boolean(result))
     {
-      const result: number = this.formInputResult.value.result;
       const inOut = this.bllService.returnResult(result);
       this.targetState = inOut ? 'in' : 'out';
       this.message = inOut ? '<span class="colorIn">ТОЧНО</span>' : '<span class="colorOut">МИМО</span>';

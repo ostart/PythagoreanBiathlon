@@ -116,11 +116,11 @@
         <form class="studingModule__form" [formGroup]="formInputResult" (ngSubmit)="submit()">
 
             <mat-form-field>
-                <input type="number" matInput placeholder="Введите ответ" formControlName="result">
+                <input type="number" matInput placeholder="Введите ответ" formControlName="result" autofocus>
                 <mat-icon matSuffix>mode_edit</mat-icon>
             </mat-form-field>
 
-            <button class="studingModule__form__btn" mat-flat-button type="submit" color="accent" [disabled]="formInputResult.invalid">Огонь!</button>
+            <button class="studingModule__form__btn" mat-flat-button type="submit" color="accent">Огонь!</button>
 
         </form>
 
