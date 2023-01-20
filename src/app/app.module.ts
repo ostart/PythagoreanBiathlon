@@ -14,6 +14,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { SanitizeHtmlPipe } from 'src/pipes/sanitizeHtml.pipe';
 
+
 @NgModule({
   declarations: [
     AppComponent,

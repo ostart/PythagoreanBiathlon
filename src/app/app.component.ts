@@ -3,7 +3,7 @@ import { Operation } from 'src/models/Operation';
 import { StudyUnit } from 'src/models/StudyUnit';
 import { Entry } from 'src/models/Entry';
 import { BllService } from 'src/services/bll.service';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge } from 'ng-animate';
@@ -20,7 +20,7 @@ import { headShake, hinge } from 'ng-animate';
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'PythagoreanBiathlon | Умножайка';
   formInputResult: FormGroup;
   formCheckboxNumbers: FormGroup;
@@ -36,6 +36,9 @@ export class AppComponent {
   operationMarkSettings: Map<Operation, string> = new Map<Operation, string>();
   selectedOperations = 'multiply';
   isCheckedAll = true;
+  @ViewChild("numberinput") numberInputField!: ElementRef;
+  @ViewChildren("numberinput") numberInputFields!: QueryList<ElementRef>;
+
 
   constructor(private bllService: BllService) {
     this.formInputResult = new FormGroup({
@@ -53,6 +56,13 @@ export class AppComponent {
     this.getUnitToMessage();
     this.sessionStatistics = (this.unitToStudy === null) ? this.bllService.getStatistics() : null;
     this.showModules(true, false, false);
+  }
+
+
+  ngAfterViewInit(): void {
+    this.numberInputFields.changes.subscribe((nums: QueryList<ElementRef>) => {
+      nums.first.nativeElement.focus();
+    });
   }
 
   isCheckedAlltoggleChange() {
@@ -93,6 +103,7 @@ export class AppComponent {
         );
       }
     }
+    this.numberInputField.nativeElement.focus();
   }
 
   onAnimationDoneEvent()
