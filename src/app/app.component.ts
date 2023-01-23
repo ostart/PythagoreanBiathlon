@@ -21,7 +21,7 @@ import { headShake, hinge } from 'ng-animate';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements AfterViewInit {
-  title = 'PythagoreanBiathlon | Умножайка';
+  title = 'УмножайДели | PythagoreanBiathlon ';
   formInputResult: FormGroup;
   formCheckboxNumbers: FormGroup;
   targetState: string;
@@ -80,7 +80,7 @@ export class AppComponent implements AfterViewInit {
 
   async submit() {
     const result: number = this.formInputResult.value.result;
-    if (Boolean(result))
+    if (Boolean(result) || result === 0)
     {
       const inOut = this.bllService.returnResult(result);
       this.targetState = inOut ? 'in' : 'out';
@@ -92,7 +92,7 @@ export class AppComponent implements AfterViewInit {
       {
         this.sessionStatistics = this.bllService.getStatistics();
         this.showModules(false, false, true);
-        const VoroshilovStriker = this.sessionStatistics.NumberOfFailed === 0 ? '<p class="backgroundColorMain">Ворошиловский стрелок!</p>' : '';
+        const VoroshilovStriker = this.sessionStatistics.NumberOfFailed === 0 && this.sessionStatistics.NumerOfSuccessful > 0 ? '<p class="backgroundColorMain">Ворошиловский стрелок!</p>' : '';
         this.statisticsResult = `${VoroshilovStriker}
         <p class="colorIn">Точно: ${this.sessionStatistics.NumerOfSuccessful}</p>
         <p class="colorOut">Мимо: ${this.sessionStatistics.NumberOfFailed}</p>
@@ -103,12 +103,19 @@ export class AppComponent implements AfterViewInit {
         );
       }
     }
+    this.numberInputField.nativeElement.value = '';
     this.numberInputField.nativeElement.focus();
   }
 
   onAnimationDoneEvent()
   {
     this.targetState = 'null';
+  }
+
+  errorValidationIfNotChecked(): boolean {
+    const selectedNumbers = this.filterObject(this.formCheckboxNumbers.value, ([k, v]) => v === true);
+    const selectedKeys = Object.keys(selectedNumbers);
+    return selectedKeys.length === 0 ? true : false;
   }
 
   private showModules(preSettingsHidden: boolean, studingModuleHidden: boolean, finalStatisticsHidden: boolean): void {

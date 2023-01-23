@@ -103,7 +103,7 @@
             <mat-checkbox formControlName="9x9"></mat-checkbox>
       </section>
 
-      <button mat-flat-button color="accent" (click)="startClick()">Поехали!</button>
+      <button mat-flat-button color="accent" [disabled]="this.errorValidationIfNotChecked()" (click)="startClick()">Поехали!</button>
 
     </div>
 
