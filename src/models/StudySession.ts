@@ -38,6 +38,11 @@ export class StudySession {
     return this.Statistics.getStatistics();
   }
 
+  restToStudyCounter(): number
+  {
+    return this.UnitsToStudy.length;
+  }
+
   calculateResult(unitToStudy: StudyUnit): number {
     switch(unitToStudy.operation)
     {

@@ -19,17 +19,17 @@
 
       </div>
 
-      <section class="preSettings__choiceGrid" [formGroup]="formCheckboxNumbers">
+      <section class="preSettings__choiceGrid" [formGroup]="formCheckboxNumbers" (click)="verifyIsCheckedAllToggle()">
         <div></div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-        <div>5</div>
-        <div>6</div>
-        <div>7</div>
-        <div>8</div>
-        <div>9</div>
-        <div>2</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(2)">2</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(3)">3</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(4)">4</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(5)">5</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(6)">6</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(7)">7</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(8)">8</div>
+        <div class="pointer" (click)="isCheckedColumnToggleChange(9)">9</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(2)">2</div>
             <mat-checkbox formControlName="2x2"></mat-checkbox>
             <mat-checkbox formControlName="2x3"></mat-checkbox>
             <mat-checkbox formControlName="2x4"></mat-checkbox>
@@ -38,7 +38,7 @@
             <mat-checkbox formControlName="2x7"></mat-checkbox>
             <mat-checkbox formControlName="2x8"></mat-checkbox>
             <mat-checkbox formControlName="2x9"></mat-checkbox>
-        <div>3</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(3)">3</div>
             <mat-checkbox formControlName="3x2"></mat-checkbox>
             <mat-checkbox formControlName="3x3"></mat-checkbox>
             <mat-checkbox formControlName="3x4"></mat-checkbox>
@@ -47,7 +47,7 @@
             <mat-checkbox formControlName="3x7"></mat-checkbox>
             <mat-checkbox formControlName="3x8"></mat-checkbox>
             <mat-checkbox formControlName="3x9"></mat-checkbox>
-        <div>4</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(4)">4</div>
             <mat-checkbox formControlName="4x2"></mat-checkbox>
             <mat-checkbox formControlName="4x3"></mat-checkbox>
             <mat-checkbox formControlName="4x4"></mat-checkbox>
@@ -56,7 +56,7 @@
             <mat-checkbox formControlName="4x7"></mat-checkbox>
             <mat-checkbox formControlName="4x8"></mat-checkbox>
             <mat-checkbox formControlName="4x9"></mat-checkbox>
-        <div>5</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(5)">5</div>
             <mat-checkbox formControlName="5x2"></mat-checkbox>
             <mat-checkbox formControlName="5x3"></mat-checkbox>
             <mat-checkbox formControlName="5x4"></mat-checkbox>
@@ -65,7 +65,7 @@
             <mat-checkbox formControlName="5x7"></mat-checkbox>
             <mat-checkbox formControlName="5x8"></mat-checkbox>
             <mat-checkbox formControlName="5x9"></mat-checkbox>
-        <div>6</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(6)">6</div>
             <mat-checkbox formControlName="6x2"></mat-checkbox>
             <mat-checkbox formControlName="6x3"></mat-checkbox>
             <mat-checkbox formControlName="6x4"></mat-checkbox>
@@ -74,7 +74,7 @@
             <mat-checkbox formControlName="6x7"></mat-checkbox>
             <mat-checkbox formControlName="6x8"></mat-checkbox>
             <mat-checkbox formControlName="6x9"></mat-checkbox>
-        <div>7</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(7)">7</div>
             <mat-checkbox formControlName="7x2"></mat-checkbox>
             <mat-checkbox formControlName="7x3"></mat-checkbox>
             <mat-checkbox formControlName="7x4"></mat-checkbox>
@@ -83,7 +83,7 @@
             <mat-checkbox formControlName="7x7"></mat-checkbox>
             <mat-checkbox formControlName="7x8"></mat-checkbox>
             <mat-checkbox formControlName="7x9"></mat-checkbox>
-        <div>8</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(8)">8</div>
             <mat-checkbox formControlName="8x2"></mat-checkbox>
             <mat-checkbox formControlName="8x3"></mat-checkbox>
             <mat-checkbox formControlName="8x4"></mat-checkbox>
@@ -92,7 +92,7 @@
             <mat-checkbox formControlName="8x7"></mat-checkbox>
             <mat-checkbox formControlName="8x8"></mat-checkbox>
             <mat-checkbox formControlName="8x9"></mat-checkbox>
-        <div>9</div>
+        <div class="pointer" (click)="isCheckedRowToggleChange(9)">9</div>
             <mat-checkbox formControlName="9x2"></mat-checkbox>
             <mat-checkbox formControlName="9x3"></mat-checkbox>
             <mat-checkbox formControlName="9x4"></mat-checkbox>
@@ -103,11 +103,13 @@
             <mat-checkbox formControlName="9x9"></mat-checkbox>
       </section>
 
-      <button mat-flat-button color="accent" [disabled]="this.errorValidationIfNotChecked()" (click)="startClick()">Поехали!</button>
+      <button mat-flat-button class="marginTop20" color="accent" [disabled]="this.errorValidationIfNotChecked()" (click)="startClick()">Поехали!</button>
 
     </div>
 
     <div class="studingModule" *ngIf="studingModuleHidden">
+
+        <div class="studingModule__rest" [innerHTML]="restMessage"></div>
 
         <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
 
@@ -127,5 +129,10 @@
     </div>
 
     <div class="finalStatistics" *ngIf="finalStatisticsHidden" [innerHtml]="statisticsResult"></div>
+
+    <!-- <footer class="container marginTop20">
+      <a href="mailto:master@умнодел.рф"><mat-icon>email</mat-icon></a>
+      <a href="https://github.com/ostart/PythagoreanBiathlon"><img src="assets/github.svg"></a>
+    </footer> -->
 
 </div>

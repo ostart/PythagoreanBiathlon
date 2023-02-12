@@ -19,7 +19,11 @@ describe("StudySessionTests", () => {
 
   it("should have 1 successful", () => {
     const toStudy = session.getUnitToStudy();
+    let leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(1);
     const result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 1));
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(0);
     const resultStatistics: SessionStatisticsDto = session.getStatistics();
 
     expect(result).toEqual(true);
@@ -32,12 +36,20 @@ describe("StudySessionTests", () => {
 
   it("should have 1 successful and 2 failed", () => {
     const toStudy = session.getUnitToStudy();
+    let leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(1);
     let result = session.returnResultForUnitToStudy(5, new Date(2023, 1, 1, 0, 0, 2));
     expect(result).toEqual(false);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(1);
     result = session.returnResultForUnitToStudy(7, new Date(2023, 1, 1, 0, 0, 3));
     expect(result).toEqual(false);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(1);
     result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
     expect(result).toEqual(true);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(0);
 
     const resultStatistics: SessionStatisticsDto = session.getStatistics();
 
@@ -56,24 +68,36 @@ describe("StudySessionTests", () => {
     const session = new StudySession(units, statistics);
 
     let toStudy = session.getUnitToStudy();
+    let leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(2);
     let result = session.returnResultForUnitToStudy(5, new Date(2023, 1, 1, 0, 0, 1));
     expect(result).toEqual(false);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(2);
 
     toStudy = session.getUnitToStudy();
     result = session.returnResultForUnitToStudy(7, new Date(2023, 1, 1, 0, 0, 2));
     expect(result).toEqual(false);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(2);
 
     toStudy = session.getUnitToStudy();
     result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
     expect(result).toEqual(false);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(2);
 
     toStudy = session.getUnitToStudy();
     result = session.returnResultForUnitToStudy(6, new Date(2023, 1, 1, 0, 0, 4));
     expect(result).toEqual(true);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(1);
 
     toStudy = session.getUnitToStudy();
     result = session.returnResultForUnitToStudy(3, new Date(2023, 1, 1, 0, 0, 4));
     expect(result).toEqual(true);
+    leftNumber = session.restToStudyCounter();
+    expect(leftNumber).toEqual(0);
 
     const resultStatistics: SessionStatisticsDto = session.getStatistics();
 

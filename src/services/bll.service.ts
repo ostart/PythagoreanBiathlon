@@ -33,6 +33,10 @@ export class BllService {
     return this.studySession.getStatistics();
   }
 
+  restToStudyCounter(): number {
+    return this.studySession.restToStudyCounter();
+  }
+
   calculateResult(unit: StudyUnit): number {
     return this.studySession.calculateResult(unit);
   }

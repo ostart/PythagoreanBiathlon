@@ -6,7 +6,7 @@ import { BllService } from 'src/services/bll.service';
 import { Component, ViewEncapsulation, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
-import { headShake, hinge } from 'ng-animate';
+import { headShake, hinge, zoomIn } from 'ng-animate';
 
 @Component({
   selector: 'app-root',
@@ -14,18 +14,20 @@ import { headShake, hinge } from 'ng-animate';
   styleUrls: ['./app.component.scss'],
   animations: [
     trigger('target',
-      [ transition('null => out', useAnimation(headShake), { params: {timing: 0.7} }),
+      [ transition('in => null', useAnimation(zoomIn), { params: {timing: 0.7} }),
+        transition('null => out', useAnimation(headShake), { params: {timing: 0.7} }),
         transition('null => in', useAnimation(hinge), { params: {timing: 0.7} })]
     ),
   ],
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements AfterViewInit {
-  title = 'УмножайДели | PythagoreanBiathlon ';
+  title = 'УмноДел';
   formInputResult: FormGroup;
   formCheckboxNumbers: FormGroup;
   targetState: string;
   unitToStudy: StudyUnit | null = null;
+  restMessage: string = '';
   sessionStatistics: SessionStatisticsDto | null;
   message: string = '';
   preSettingsHidden: boolean;
@@ -68,6 +70,40 @@ export class AppComponent implements AfterViewInit {
   isCheckedAlltoggleChange() {
     this.isCheckedAll = !this.isCheckedAll;
     this.formCheckboxNumbers = new FormBuilder().group(this.generateCheckboxObject(this.isCheckedAll));
+  }
+
+  isCheckedRowToggleChange(row: number) {
+    const selectedRows = this.filterObject(this.formCheckboxNumbers.value, ([k, v]) => k.startsWith(row.toString()));
+    const selectedRowsTrue = this.filterObject(selectedRows, ([k, v]) => v === true)
+    const selectedKeysTrue = Object.keys(selectedRowsTrue);
+    const selectedKeys = Object.keys(selectedRows);
+    const newFormCheckboxNumber = this.copyCheckboxObject(this.formCheckboxNumbers.value);
+    if (selectedKeysTrue.length === 8)
+    {
+      selectedKeys.forEach(k => newFormCheckboxNumber[k] = false);
+    }
+    else
+    {
+      selectedKeys.forEach(k => newFormCheckboxNumber[k] = true);
+    }
+    this.formCheckboxNumbers = new FormBuilder().group(newFormCheckboxNumber);
+  }
+
+  isCheckedColumnToggleChange(column: number) {
+    const selectedColumns = this.filterObject(this.formCheckboxNumbers.value, ([k, v]) => k.endsWith(column.toString()));
+    const selectedColumnsTrue = this.filterObject(selectedColumns, ([k, v]) => v === true)
+    const selectedKeysTrue = Object.keys(selectedColumnsTrue);
+    const selectedKeys = Object.keys(selectedColumns);
+    const newFormCheckboxNumber = this.copyCheckboxObject(this.formCheckboxNumbers.value);
+    if (selectedKeysTrue.length === 8)
+    {
+      selectedKeys.forEach(k => newFormCheckboxNumber[k] = false);
+    }
+    else
+    {
+      selectedKeys.forEach(k => newFormCheckboxNumber[k] = true);
+    }
+    this.formCheckboxNumbers = new FormBuilder().group(newFormCheckboxNumber);
   }
 
   startClick() {
@@ -116,6 +152,20 @@ export class AppComponent implements AfterViewInit {
     const selectedNumbers = this.filterObject(this.formCheckboxNumbers.value, ([k, v]) => v === true);
     const selectedKeys = Object.keys(selectedNumbers);
     return selectedKeys.length === 0 ? true : false;
+  }
+
+  verifyIsCheckedAllToggle()
+  {
+    const selectedNumbers = this.filterObject(this.formCheckboxNumbers.value, ([k, v]) => v === true);
+    const selectedKeys = Object.keys(selectedNumbers);
+    if (selectedKeys.length === Object.keys(this.formCheckboxNumbers.value).length)
+    {
+      this.isCheckedAll = true;
+    }
+    if (selectedKeys.length === 0)
+    {
+      this.isCheckedAll = false;
+    }
   }
 
   private showModules(preSettingsHidden: boolean, studingModuleHidden: boolean, finalStatisticsHidden: boolean): void {
@@ -174,6 +224,16 @@ export class AppComponent implements AfterViewInit {
     return result;
   }
 
+  private copyCheckboxObject(value: {[k: string]: boolean}): {[k: string]: boolean} {
+    const result: {[k: string]: boolean} = {};
+    for (let i = 2; i <= 9; i+=1) {
+      for (let j = 2; j <= 9; j+=1) {
+        result[`${i}x${j}`] = value[`${i}x${j}`];
+      }
+    }
+    return result;
+  }
+
   private createUnitsToStudy(allNumbers: {[k: string]: boolean}, selectedOperations: string): StudyUnit[] {
     const result: StudyUnit[] = [];
     const operation: Operation[] = [];
@@ -207,5 +267,6 @@ export class AppComponent implements AfterViewInit {
   private getUnitToMessage() {
     this.unitToStudy = this.bllService.unitToStudy();
     this.message = this.formQuestionMessage(this.unitToStudy, this.questionMark, this.operationMarkSettings);
+    this.restMessage = `Осталось: ${this.bllService.restToStudyCounter()}`;
   }
 }

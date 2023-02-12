@@ -3,6 +3,10 @@ h1 {
   font-weight: 900!important;
 }
 
+// footer {
+//   // align-self: flex-end;
+// }
+
 input[type="number"] {
   text-align: center;
 }
@@ -39,6 +43,10 @@ mat-select {
   width: 15px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -72,6 +80,11 @@ mat-select {
   align-items: center;
 }
 
+.studingModule__rest {
+  align-self: end;
+  margin-right: 20px;
+}
+
 .studingModule__target {
   width: 100px;
   height: 100px;
@@ -79,6 +92,7 @@ mat-select {
   border-radius: 50%;
   background-color: #000;
   margin: 30px;
+  margin-top: 20px;
 }
 
 .studingModule__unitToStudy {
