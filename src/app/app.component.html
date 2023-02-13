@@ -105,11 +105,13 @@
 
       <button mat-flat-button class="marginTop20" color="accent" [disabled]="this.errorValidationIfNotChecked()" (click)="startClick()">Поехали!</button>
 
+      <div class="marginTop20 pseudofooter"><a href="https://github.com/ostart/PythagoreanBiathlon" target="_blank"><img src="assets/github.svg"></a></div>
+
     </div>
 
     <div class="studingModule" *ngIf="studingModuleHidden">
 
-        <div class="studingModule__rest" [innerHTML]="restMessage"></div>
+        <div class="studingModule__rest">{{restMessage}}</div>
 
         <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
 
@@ -129,10 +131,5 @@
     </div>
 
     <div class="finalStatistics" *ngIf="finalStatisticsHidden" [innerHtml]="statisticsResult"></div>
-
-    <!-- <footer class="container marginTop20">
-      <a href="mailto:master@умнодел.рф"><mat-icon>email</mat-icon></a>
-      <a href="https://github.com/ostart/PythagoreanBiathlon"><img src="assets/github.svg"></a>
-    </footer> -->
 
 </div>

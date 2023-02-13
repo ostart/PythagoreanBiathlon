@@ -3,9 +3,13 @@ h1 {
   font-weight: 900!important;
 }
 
-// footer {
-//   // align-self: flex-end;
-// }
+.pseudofooter {
+  align-self: flex-end;
+
+  a > img {
+    width: 28px;
+  }
+}
 
 input[type="number"] {
   text-align: center;
