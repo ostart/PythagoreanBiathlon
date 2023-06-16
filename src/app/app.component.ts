@@ -7,6 +7,8 @@ import { Component, ViewEncapsulation, ViewChild, ElementRef, ViewChildren, Quer
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge, zoomIn } from 'ng-animate';
+import {TranslateService} from "@ngx-translate/core";
+
 
 @Component({
   selector: 'app-root',
@@ -37,12 +39,15 @@ export class AppComponent implements AfterViewInit {
   questionMark = '?';
   operationMarkSettings: Map<Operation, string> = new Map<Operation, string>();
   selectedOperations = 'multiply';
+  selectedLanguage = 'ru';
   isCheckedAll = true;
   @ViewChild("numberinput") numberInputField!: ElementRef;
   @ViewChildren("numberinput") numberInputFields!: QueryList<ElementRef>;
 
 
-  constructor(private bllService: BllService) {
+  constructor(private bllService: BllService, private translate: TranslateService) {
+    translate.setDefaultLang(this.selectedLanguage);
+    translate.use(this.selectedLanguage);
     this.formInputResult = new FormGroup({
       result: new FormControl(null)
     });
@@ -120,7 +125,7 @@ export class AppComponent implements AfterViewInit {
     {
       const inOut = this.bllService.returnResult(result);
       this.targetState = inOut ? 'in' : 'out';
-      this.message = inOut ? '<span class="colorIn">ТОЧНО</span>' : '<span class="colorOut">МИМО</span>';
+      this.message = inOut ? `<span class="colorIn">${this.translate.instant('app.in-target').toUpperCase()}</span>` : `<span class="colorOut">${this.translate.instant('app.out-target').toUpperCase()}</span>`;
       this.formInputResult.reset();
       await this.delay(500);
       this.getUnitToMessage();
@@ -128,13 +133,13 @@ export class AppComponent implements AfterViewInit {
       {
         this.sessionStatistics = this.bllService.getStatistics();
         this.showModules(false, false, true);
-        const VoroshilovStriker = this.sessionStatistics.NumberOfFailed === 0 && this.sessionStatistics.NumerOfSuccessful > 0 ? '<p class="backgroundColorMain">Ворошиловский стрелок!</p>' : '';
+        const VoroshilovStriker = this.sessionStatistics.NumberOfFailed === 0 && this.sessionStatistics.NumerOfSuccessful > 0 ? `<p class="backgroundColorMain">${this.translate.instant('app.voroshilov-striker')}!</p>` : '';
         this.statisticsResult = `${VoroshilovStriker}
-        <p class="colorIn">Точно: ${this.sessionStatistics.NumerOfSuccessful}</p>
-        <p class="colorOut">Мимо: ${this.sessionStatistics.NumberOfFailed}</p>
-        <p>Время: ${this.msToTime(this.sessionStatistics.SpentTime.getTime())}</p>` + (
+        <p class="colorIn">${this.translate.instant('app.in-target')}: ${this.sessionStatistics.NumerOfSuccessful}</p>
+        <p class="colorOut">${this.translate.instant('app.out-target')}: ${this.sessionStatistics.NumberOfFailed}</p>
+        <p>${this.translate.instant('app.time')}: ${this.msToTime(this.sessionStatistics.SpentTime.getTime())}</p>` + (
           (this.sessionStatistics.FailureToRepeat.length>0)
-          ? `<p class="marginTop20 backgroundColorMain">ПОВТОРИ:</p>${this.stringify(this.sessionStatistics.FailureToRepeat)}`
+          ? `<p class="marginTop20 backgroundColorMain">${this.translate.instant('app.repeat')}:</p>${this.stringify(this.sessionStatistics.FailureToRepeat)}`
           : ''
         );
       }
@@ -166,6 +171,11 @@ export class AppComponent implements AfterViewInit {
     {
       this.isCheckedAll = false;
     }
+  }
+
+  useLanguage(language: string): void {
+    console.log('useLanguage ' + language);
+    this.translate.use(language);
   }
 
   private showModules(preSettingsHidden: boolean, studingModuleHidden: boolean, finalStatisticsHidden: boolean): void {
@@ -267,6 +277,6 @@ export class AppComponent implements AfterViewInit {
   private getUnitToMessage() {
     this.unitToStudy = this.bllService.unitToStudy();
     this.message = this.formQuestionMessage(this.unitToStudy, this.questionMark, this.operationMarkSettings);
-    this.restMessage = `Осталось: ${this.bllService.restToStudyCounter()}`;
+    this.restMessage = `${this.translate.instant('app.remaining')}: ${this.bllService.restToStudyCounter()}`;
   }
 }

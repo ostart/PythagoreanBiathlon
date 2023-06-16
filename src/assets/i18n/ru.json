@@ -1,0 +1,20 @@
+{
+  "app": {
+		"greeting": "Hello {name}!",
+		"start-button": "Поехали!",
+		"title": "Пифагорейский биатлон",
+    "study-all": "Учить всё",
+    "select-operation": "Выберите операцию",
+    "multiply": "Умножение",
+    "divide": "Деление",
+    "multiply+divide": "Умножение и Деление",
+    "fire": "Огонь!",
+    "remaining": "Осталось",
+    "answer-placeholder": "Введите ответ",
+    "in-target": "Точно",
+    "out-target": "Мимо",
+    "voroshilov-striker": "Ворошиловский стрелок",
+    "time": "Время",
+    "repeat": "ПОВТОРИ"
+	}
+}

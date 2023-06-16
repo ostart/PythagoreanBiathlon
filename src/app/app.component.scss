@@ -4,10 +4,17 @@ h1 {
 }
 
 .pseudofooter {
-  align-self: flex-end;
+  display: flex;
+  justify-content: space-between;
 
   a > img {
-    width: 28px;
+    width: 50px;
+  }
+}
+
+.languageSelector {
+  mat-form-field {
+    width: 35%;
   }
 }
 
@@ -62,6 +69,12 @@ mat-select {
 .preSettings {
   display: flex;
   flex-direction: column;
+
+  button {
+    height: 4em!important;
+    font-size: large;
+    font-weight: 500;
+  }
 }
 
 .preSettings__switchers {

@@ -1,0 +1,20 @@
+{
+  "app": {
+		"greeting": "Hello {name}!",
+		"start-button": "Go!",
+		"title": "Pythagorean biathlon",
+    "study-all": "All",
+    "select-operation": "Select operation",
+    "multiply": "Multiply",
+    "divide": "Divide",
+    "multiply+divide": "Multiply and Divide",
+    "fire": "Fire!",
+    "remaining": "Remaining",
+    "answer-placeholder": "Your answer",
+    "in-target": "Perfect",
+    "out-target": "Mishit",
+    "voroshilov-striker": "Voroshilov Sharpshooter",
+    "time": "Time",
+    "repeat": "REPEAT"
+	}
+}

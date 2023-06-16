@@ -1,19 +1,19 @@
 <div class="container">
 
-    <h1>Пифагорейский биатлон</h1>
+    <h1>{{'app.title' | translate}}</h1>
 
     <div class="preSettings" *ngIf="preSettingsHidden">
 
       <div class="preSettings__switchers">
 
-        <mat-slide-toggle [(ngModel)]="isCheckedAll" (toggleChange)="isCheckedAlltoggleChange()">Учить все</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="isCheckedAll" (toggleChange)="isCheckedAlltoggleChange()">{{'app.study-all' | translate}}</mat-slide-toggle>
 
         <mat-form-field appearance="fill">
-          <mat-label>Выберите операцию</mat-label>
+          <mat-label>{{'app.select-operation' | translate}}</mat-label>
           <mat-select [(value)]="selectedOperations">
-            <mat-option value="multiply">Умножение</mat-option>
-            <mat-option value="divide">Деление</mat-option>
-            <mat-option value="multiply&divide">Умножение и Деление</mat-option>
+            <mat-option value="multiply">{{'app.multiply' | translate}}</mat-option>
+            <mat-option value="divide">{{'app.divide' | translate}}</mat-option>
+            <mat-option value="multiply&divide">{{'app.multiply+divide' | translate}}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -103,15 +103,25 @@
             <mat-checkbox formControlName="9x9"></mat-checkbox>
       </section>
 
-      <button mat-flat-button class="marginTop20" color="accent" [disabled]="this.errorValidationIfNotChecked()" (click)="startClick()">Поехали!</button>
+      <button mat-flat-button class="marginTop20" color="accent" [disabled]="this.errorValidationIfNotChecked()" (click)="startClick()">{{'app.start-button' | translate}}</button>
 
-      <div class="marginTop20 pseudofooter"><a href="https://github.com/ostart/PythagoreanBiathlon" target="_blank"><img src="assets/github.svg"></a></div>
+      <div class="marginTop20 pseudofooter">
+        <div class="languageSelector">
+          <mat-form-field appearance="outline">
+            <mat-select [(value)]="selectedLanguage" (selectionChange)="useLanguage($event.value)">
+              <mat-option value="ru">RU</mat-option>
+              <mat-option value="en">EN</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <a href="https://github.com/ostart/PythagoreanBiathlon" target="_blank"><img src="assets/github.svg"></a>
+      </div>
 
     </div>
 
     <div class="studingModule" *ngIf="studingModuleHidden">
 
-        <div class="studingModule__rest">{{restMessage}}</div>
+        <div class="studingModule__rest">{{restMessage | translate}}</div>
 
         <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
 
@@ -120,11 +130,11 @@
         <form class="studingModule__form" [formGroup]="formInputResult" (ngSubmit)="submit()">
 
             <mat-form-field>
-                <input type="number" #numberinput matInput placeholder="Введите ответ" formControlName="result" autofocus>
+                <input type="number" #numberinput matInput placeholder="{{'app.answer-placeholder' | translate}}" formControlName="result" autofocus>
                 <mat-icon matSuffix>mode_edit</mat-icon>
             </mat-form-field>
 
-            <button class="studingModule__form__btn" mat-flat-button type="submit" color="accent">Огонь!</button>
+            <button class="studingModule__form__btn" mat-flat-button type="submit" color="accent">{{'app.fire' | translate}}</button>
 
         </form>
 
