@@ -15,6 +15,7 @@
     "out-target": "Mishit",
     "voroshilov-striker": "Voroshilov Sharpshooter",
     "time": "Time",
-    "repeat": "REPEAT"
+    "repeat": "REPEAT",
+    "retry": "Play Again!"
 	}
 }

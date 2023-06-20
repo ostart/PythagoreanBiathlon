@@ -8,13 +8,18 @@ h1 {
   justify-content: space-between;
 
   a > img {
-    width: 50px;
+    width: 42px;
   }
 }
 
 .languageSelector {
   mat-form-field {
     width: 35%;
+  }
+  .mat-mdc-form-field-infix {
+    min-height: 40px !important;
+    padding-top: 8px !important;
+    padding-bottom:8px !important;
   }
 }
 
@@ -133,6 +138,12 @@ mat-select {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  button {
+    height: 4em!important;
+    font-size: large;
+    font-weight: 500;
+  }
 }
 
 @media screen and (max-width: 374px) {

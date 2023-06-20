@@ -7,7 +7,7 @@ import { Component, ViewEncapsulation, ViewChild, ElementRef, ViewChildren, Quer
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge, zoomIn } from 'ng-animate';
-import {TranslateService} from "@ngx-translate/core";
+import { TranslateService } from "@ngx-translate/core";
 
 
 @Component({
@@ -119,6 +119,10 @@ export class AppComponent implements AfterViewInit {
     this.showModules(false, true, false);
   }
 
+  retryClick() {
+    window.location.reload();
+  }
+
   async submit() {
     const result: number = this.formInputResult.value.result;
     if (Boolean(result) || result === 0)
@@ -174,7 +178,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   useLanguage(language: string): void {
-    console.log('useLanguage ' + language);
     this.translate.use(language);
   }
 

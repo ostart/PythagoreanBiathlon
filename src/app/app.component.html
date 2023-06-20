@@ -135,11 +135,13 @@
             </mat-form-field>
 
             <button class="studingModule__form__btn" mat-flat-button type="submit" color="accent">{{'app.fire' | translate}}</button>
-
         </form>
 
     </div>
 
     <div class="finalStatistics" *ngIf="finalStatisticsHidden" [innerHtml]="statisticsResult"></div>
+    <div class="finalStatistics marginTop20" *ngIf="finalStatisticsHidden">
+      <button  mat-flat-button color="accent" (click)="retryClick()">{{'app.retry' | translate}}</button>
+    </div>
 
 </div>
