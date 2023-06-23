@@ -8,6 +8,7 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge, zoomIn } from 'ng-animate';
 import { TranslateService } from "@ngx-translate/core";
+import defaultLanguage from "./../assets/i18n/ru.json";
 
 
 @Component({
@@ -46,8 +47,8 @@ export class AppComponent implements AfterViewInit {
 
 
   constructor(private bllService: BllService, private translate: TranslateService) {
-    translate.setDefaultLang(this.selectedLanguage);
-    translate.use(this.selectedLanguage);
+    translate.setTranslation('ru', defaultLanguage);
+    translate.setDefaultLang('ru');
     this.formInputResult = new FormGroup({
       result: new FormControl(null)
     });
