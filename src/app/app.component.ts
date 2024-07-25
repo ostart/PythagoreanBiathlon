@@ -3,12 +3,13 @@ import { Operation } from 'src/models/Operation';
 import { StudyUnit } from 'src/models/StudyUnit';
 import { Entry } from 'src/models/Entry';
 import { BllService } from 'src/services/bll.service';
-import { Component, ViewEncapsulation, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { headShake, hinge, zoomIn } from 'ng-animate';
 import { TranslateService } from "@ngx-translate/core";
-import defaultLanguage from "./../assets/i18n/ru.json";
+import * as defaultLanguage from "../assets/i18n/ru.json";
+import { DOCUMENT } from '@angular/common';
 
 
 @Component({
@@ -22,45 +23,42 @@ import defaultLanguage from "./../assets/i18n/ru.json";
         transition('null => in', useAnimation(hinge), { params: {timing: 0.7} })]
     ),
   ],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements AfterViewInit {
-  title = 'УмноДел';
-  formInputResult: FormGroup;
-  formCheckboxNumbers: FormGroup;
-  targetState: string;
+  readonly cells: number[] = [2,3,4,5,6,7,8,9];
+  readonly title = 'УмноДел';
+  readonly formInputResult: FormGroup = new FormGroup({
+      result: new FormControl(null)
+    });
+  targetState: string = 'null';
   unitToStudy: StudyUnit | null = null;
   restMessage: string = '';
   sessionStatistics: SessionStatisticsDto | null;
   message: string = '';
-  preSettingsHidden: boolean;
-  studingModuleHidden: boolean;
-  finalStatisticsHidden: boolean;
-  statisticsResult: string;
+  preSettingsHidden: boolean = false;
+  studingModuleHidden: boolean = false;
+  finalStatisticsHidden: boolean = false;
+  statisticsResult: string = '';
   questionMark = '?';
-  operationMarkSettings: Map<Operation, string> = new Map<Operation, string>();
+  operationMarkSettings: Map<Operation, string> = this.initOperationMarkSettings();
   selectedOperations = 'multiply';
   selectedLanguage = 'ru';
   isCheckedAll = true;
+  formCheckboxNumbers: FormGroup = new FormBuilder().group(this.generateCheckboxObject(this.isCheckedAll));
+
   @ViewChild("numberinput") numberInputField!: ElementRef;
   @ViewChildren("numberinput") numberInputFields!: QueryList<ElementRef>;
 
+ 
+  private readonly window: Window & typeof globalThis | null = this.document.defaultView
 
-  constructor(private bllService: BllService, private translate: TranslateService) {
+  constructor(
+    @Inject(DOCUMENT) private readonly document: Document,
+    private readonly bllService: BllService,
+    private readonly translate: TranslateService) {
     translate.setTranslation('ru', defaultLanguage);
     translate.setDefaultLang('ru');
-    this.formInputResult = new FormGroup({
-      result: new FormControl(null)
-    });
-    this.formCheckboxNumbers = new FormBuilder().group(this.generateCheckboxObject(this.isCheckedAll));
-    this.targetState = 'null';
-    this.statisticsResult = '';
-    this.preSettingsHidden = false;
-    this.studingModuleHidden = false;
-    this.finalStatisticsHidden = false;
-    if (this.operationMarkSettings.size === 0) {
-      this.operationMarkSettings = this.initOperationMarkSettings();
-    }
     this.getUnitToMessage();
     this.sessionStatistics = (this.unitToStudy === null) ? this.bllService.getStatistics() : null;
     this.showModules(true, false, false);
@@ -112,7 +110,7 @@ export class AppComponent implements AfterViewInit {
     this.formCheckboxNumbers = new FormBuilder().group(newFormCheckboxNumber);
   }
 
-  startClick() {
+  startClick(): void {
     const unitsToStudy: StudyUnit[] = this.createUnitsToStudy(this.formCheckboxNumbers.value, this.selectedOperations)
     this.bllService.init(unitsToStudy);
     this.getUnitToMessage();
@@ -121,7 +119,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   retryClick() {
-    window.location.reload();
+    this.window?.location.reload();
   }
 
   async submit() {
@@ -230,8 +228,8 @@ export class AppComponent implements AfterViewInit {
 
   private generateCheckboxObject(value: boolean): {[k: string]: boolean} {
     const result: {[k: string]: boolean} = {};
-    for (let i = 2; i <= 9; i+=1) {
-      for (let j = 2; j <= 9; j+=1) {
+    for (let i of this.cells) {
+      for (let j of this.cells) {
         result[`${i}x${j}`] = value;
       }
     }
@@ -240,8 +238,8 @@ export class AppComponent implements AfterViewInit {
 
   private copyCheckboxObject(value: {[k: string]: boolean}): {[k: string]: boolean} {
     const result: {[k: string]: boolean} = {};
-    for (let i = 2; i <= 9; i+=1) {
-      for (let j = 2; j <= 9; j+=1) {
+    for (let i of this.cells) {
+      for (let j of this.cells) {
         result[`${i}x${j}`] = value[`${i}x${j}`];
       }
     }

@@ -1,147 +1,87 @@
 <div class="container">
+  <h1>{{ "app.title" | translate }}</h1>
 
-    <h1>{{'app.title' | translate}}</h1>
+  <div class="preSettings" *ngIf="preSettingsHidden">
+    <div class="preSettings__switchers">
+      <mat-slide-toggle [(ngModel)]="isCheckedAll" (toggleChange)="isCheckedAlltoggleChange()">{{ "app.study-all" |
+        translate }}</mat-slide-toggle>
 
-    <div class="preSettings" *ngIf="preSettingsHidden">
+      <mat-form-field appearance="fill">
+        <mat-label>{{ "app.select-operation" | translate }}</mat-label>
+        <mat-select [(value)]="selectedOperations">
+          <mat-option value="multiply">{{
+            "app.multiply" | translate
+            }}</mat-option>
+          <mat-option value="divide">{{ "app.divide" | translate }}</mat-option>
+          <mat-option value="multiply&divide">{{
+            "app.multiply+divide" | translate
+            }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-      <div class="preSettings__switchers">
+    <table [formGroup]="formCheckboxNumbers">
+      <thead>
+        <th scope="col"></th>
+        <th scope="col" *ngFor="let cell of cells">{{cell}}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of cells">
+          <th scope="row">
+            <div class="pointer row" (click)="isCheckedRowToggleChange(row)">{{row}}</div>
+          </th>
+          <td *ngFor="let cell of cells">
+            <mat-checkbox [formControlName]="row + 'x'+ cell">
+            </mat-checkbox>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-        <mat-slide-toggle [(ngModel)]="isCheckedAll" (toggleChange)="isCheckedAlltoggleChange()">{{'app.study-all' | translate}}</mat-slide-toggle>
+    <button mat-flat-button class="marginTop20" color="accent" [disabled]="this.errorValidationIfNotChecked()"
+      (click)="startClick()">
+      {{ "app.start-button" | translate }}
+    </button>
 
-        <mat-form-field appearance="fill">
-          <mat-label>{{'app.select-operation' | translate}}</mat-label>
-          <mat-select [(value)]="selectedOperations">
-            <mat-option value="multiply">{{'app.multiply' | translate}}</mat-option>
-            <mat-option value="divide">{{'app.divide' | translate}}</mat-option>
-            <mat-option value="multiply&divide">{{'app.multiply+divide' | translate}}</mat-option>
+    <div class="marginTop20 pseudofooter">
+      <div class="languageSelector">
+        <mat-form-field appearance="outline">
+          <mat-select [(value)]="selectedLanguage" (selectionChange)="useLanguage($event.value)">
+            <mat-option value="ru">RU</mat-option>
+            <mat-option value="en">EN</mat-option>
           </mat-select>
         </mat-form-field>
-
       </div>
+      <a href="https://github.com/ostart/PythagoreanBiathlon" target="_blank"><img src="assets/github.svg" /></a>
+    </div>
+  </div>
 
-      <section class="preSettings__choiceGrid" [formGroup]="formCheckboxNumbers" (click)="verifyIsCheckedAllToggle()">
-        <div></div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(2)">2</div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(3)">3</div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(4)">4</div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(5)">5</div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(6)">6</div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(7)">7</div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(8)">8</div>
-        <div class="pointer" (click)="isCheckedColumnToggleChange(9)">9</div>
-        <div class="pointer" (click)="isCheckedRowToggleChange(2)">2</div>
-            <mat-checkbox formControlName="2x2"></mat-checkbox>
-            <mat-checkbox formControlName="2x3"></mat-checkbox>
-            <mat-checkbox formControlName="2x4"></mat-checkbox>
-            <mat-checkbox formControlName="2x5"></mat-checkbox>
-            <mat-checkbox formControlName="2x6"></mat-checkbox>
-            <mat-checkbox formControlName="2x7"></mat-checkbox>
-            <mat-checkbox formControlName="2x8"></mat-checkbox>
-            <mat-checkbox formControlName="2x9"></mat-checkbox>
-        <div class="pointer" (click)="isCheckedRowToggleChange(3)">3</div>
-            <mat-checkbox formControlName="3x2"></mat-checkbox>
-            <mat-checkbox formControlName="3x3"></mat-checkbox>
-            <mat-checkbox formControlName="3x4"></mat-checkbox>
-            <mat-checkbox formControlName="3x5"></mat-checkbox>
-            <mat-checkbox formControlName="3x6"></mat-checkbox>
-            <mat-checkbox formControlName="3x7"></mat-checkbox>
-            <mat-checkbox formControlName="3x8"></mat-checkbox>
-            <mat-checkbox formControlName="3x9"></mat-checkbox>
-        <div class="pointer" (click)="isCheckedRowToggleChange(4)">4</div>
-            <mat-checkbox formControlName="4x2"></mat-checkbox>
-            <mat-checkbox formControlName="4x3"></mat-checkbox>
-            <mat-checkbox formControlName="4x4"></mat-checkbox>
-            <mat-checkbox formControlName="4x5"></mat-checkbox>
-            <mat-checkbox formControlName="4x6"></mat-checkbox>
-            <mat-checkbox formControlName="4x7"></mat-checkbox>
-            <mat-checkbox formControlName="4x8"></mat-checkbox>
-            <mat-checkbox formControlName="4x9"></mat-checkbox>
-        <div class="pointer" (click)="isCheckedRowToggleChange(5)">5</div>
-            <mat-checkbox formControlName="5x2"></mat-checkbox>
-            <mat-checkbox formControlName="5x3"></mat-checkbox>
-            <mat-checkbox formControlName="5x4"></mat-checkbox>
-            <mat-checkbox formControlName="5x5"></mat-checkbox>
-            <mat-checkbox formControlName="5x6"></mat-checkbox>
-            <mat-checkbox formControlName="5x7"></mat-checkbox>
-            <mat-checkbox formControlName="5x8"></mat-checkbox>
-            <mat-checkbox formControlName="5x9"></mat-checkbox>
-        <div class="pointer" (click)="isCheckedRowToggleChange(6)">6</div>
-            <mat-checkbox formControlName="6x2"></mat-checkbox>
-            <mat-checkbox formControlName="6x3"></mat-checkbox>
-            <mat-checkbox formControlName="6x4"></mat-checkbox>
-            <mat-checkbox formControlName="6x5"></mat-checkbox>
-            <mat-checkbox formControlName="6x6"></mat-checkbox>
-            <mat-checkbox formControlName="6x7"></mat-checkbox>
-            <mat-checkbox formControlName="6x8"></mat-checkbox>
-            <mat-checkbox formControlName="6x9"></mat-checkbox>
-        <div class="pointer" (click)="isCheckedRowToggleChange(7)">7</div>
-            <mat-checkbox formControlName="7x2"></mat-checkbox>
-            <mat-checkbox formControlName="7x3"></mat-checkbox>
-            <mat-checkbox formControlName="7x4"></mat-checkbox>
-            <mat-checkbox formControlName="7x5"></mat-checkbox>
-            <mat-checkbox formControlName="7x6"></mat-checkbox>
-            <mat-checkbox formControlName="7x7"></mat-checkbox>
-            <mat-checkbox formControlName="7x8"></mat-checkbox>
-            <mat-checkbox formControlName="7x9"></mat-checkbox>
-        <div class="pointer" (click)="isCheckedRowToggleChange(8)">8</div>
-            <mat-checkbox formControlName="8x2"></mat-checkbox>
-            <mat-checkbox formControlName="8x3"></mat-checkbox>
-            <mat-checkbox formControlName="8x4"></mat-checkbox>
-            <mat-checkbox formControlName="8x5"></mat-checkbox>
-            <mat-checkbox formControlName="8x6"></mat-checkbox>
-            <mat-checkbox formControlName="8x7"></mat-checkbox>
-            <mat-checkbox formControlName="8x8"></mat-checkbox>
-            <mat-checkbox formControlName="8x9"></mat-checkbox>
-        <div class="pointer" (click)="isCheckedRowToggleChange(9)">9</div>
-            <mat-checkbox formControlName="9x2"></mat-checkbox>
-            <mat-checkbox formControlName="9x3"></mat-checkbox>
-            <mat-checkbox formControlName="9x4"></mat-checkbox>
-            <mat-checkbox formControlName="9x5"></mat-checkbox>
-            <mat-checkbox formControlName="9x6"></mat-checkbox>
-            <mat-checkbox formControlName="9x7"></mat-checkbox>
-            <mat-checkbox formControlName="9x8"></mat-checkbox>
-            <mat-checkbox formControlName="9x9"></mat-checkbox>
-      </section>
+  <div class="studingModule" *ngIf="studingModuleHidden">
+    <div class="studingModule__rest">{{ restMessage | translate }}</div>
 
-      <button mat-flat-button class="marginTop20" color="accent" [disabled]="this.errorValidationIfNotChecked()" (click)="startClick()">{{'app.start-button' | translate}}</button>
+    <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
 
-      <div class="marginTop20 pseudofooter">
-        <div class="languageSelector">
-          <mat-form-field appearance="outline">
-            <mat-select [(value)]="selectedLanguage" (selectionChange)="useLanguage($event.value)">
-              <mat-option value="ru">RU</mat-option>
-              <mat-option value="en">EN</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <a href="https://github.com/ostart/PythagoreanBiathlon" target="_blank"><img src="assets/github.svg"></a>
-      </div>
-
+    <div class="studingModule__unitToStudy" [innerHTML]="message | sanitizeHtml">
+      <span></span>
     </div>
 
-    <div class="studingModule" *ngIf="studingModuleHidden">
+    <form class="studingModule__form" [formGroup]="formInputResult" (ngSubmit)="submit()">
+      <mat-form-field>
+        <input type="number" #numberinput matInput placeholder="{{ 'app.answer-placeholder' | translate }}"
+          formControlName="result" autofocus />
+        <mat-icon matSuffix>mode_edit</mat-icon>
+      </mat-form-field>
 
-        <div class="studingModule__rest">{{restMessage | translate}}</div>
+      <button class="studingModule__form__btn" mat-flat-button type="submit" color="accent">
+        {{ "app.fire" | translate }}
+      </button>
+    </form>
+  </div>
 
-        <div class="studingModule__target" [@target]="targetState" (@target.done)="onAnimationDoneEvent()"></div>
-
-        <div class="studingModule__unitToStudy" [innerHTML]="message | sanitizeHtml"></div>
-
-        <form class="studingModule__form" [formGroup]="formInputResult" (ngSubmit)="submit()">
-
-            <mat-form-field>
-                <input type="number" #numberinput matInput placeholder="{{'app.answer-placeholder' | translate}}" formControlName="result" autofocus>
-                <mat-icon matSuffix>mode_edit</mat-icon>
-            </mat-form-field>
-
-            <button class="studingModule__form__btn" mat-flat-button type="submit" color="accent">{{'app.fire' | translate}}</button>
-        </form>
-
-    </div>
-
-    <div class="finalStatistics" *ngIf="finalStatisticsHidden" [innerHtml]="statisticsResult"></div>
-    <div class="finalStatistics marginTop20" *ngIf="finalStatisticsHidden">
-      <button  mat-flat-button color="accent" (click)="retryClick()">{{'app.retry' | translate}}</button>
-    </div>
-
+  <div class="finalStatistics" *ngIf="finalStatisticsHidden" [innerHtml]="statisticsResult"></div>
+  <div class="finalStatistics marginTop20" *ngIf="finalStatisticsHidden">
+    <button mat-flat-button color="accent" (click)="retryClick()">
+      {{ "app.retry" | translate }}
+    </button>
+  </div>
 </div>
