@@ -18,12 +18,13 @@ import { SanitizeHtmlPipe } from 'src/pipes/sanitizeHtml.pipe';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
   ],
   imports: [
     BrowserModule,
